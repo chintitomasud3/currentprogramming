@@ -29,7 +29,7 @@ app = FastAPI()
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "Hello World padmabank"}
+    return {"message": "Hello World padmabank PLC"}
 
 # Endpoint to create a new user
 @app.post("/createuser")
