@@ -1,8 +1,8 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from . import schemas
+
+
+
 
 # # Database configuration
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
@@ -19,9 +19,7 @@ from sqlalchemy.orm import sessionmaker
 # Base = declarative_base()
 
 # Pydantic model for user data
-class Dbuser(BaseModel):
-    Dbuser: str
-    password: str
+
 
 # FastAPI application instance
 app = FastAPI()
@@ -33,5 +31,5 @@ async def root():
 
 # Endpoint to create a new user
 @app.post("/createuser")
-async def createuser(db:Dbuser):
+async def createuser(db:schemas.Dbuser):
     return {"message": f"Masud New user is created name : {db.Dbuser}"}
