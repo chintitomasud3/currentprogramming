@@ -1,22 +1,37 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+# Database configuration
+SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+
+# Create SQLAlchemy engine
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+)
+
+# Session factory for ORM
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base class for ORM models
+Base = declarative_base()
+
+# Pydantic model for user data
+class Dbuser(BaseModel):
+    Dbuser: str
+    pasword: str
+
+# FastAPI application instance
 app = FastAPI()
 
-
+# Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "Hello World haire"}
+    return {"message": "Hello World padmabank"}
 
-@app.get("/about/{designation}")
-async def about(designation):
-    return {"message":f"we are the best bank in bangladesh i am {designation}"}
-
-@app.get("/dpost/{dpost}/{comment}")
-async def dpost(dpost,comment):
-    
-   # return {"message":f"your postname is {dpost} "}
-    return {"messages":{
-         "comment":f"your post name is {dpost}",
-          "custome":f"I am your boss of {comment}"
-    }}
-
+# Endpoint to create a new user
+@app.post("/createuser")
+async def createuser(db:Dbuser):
+    return {"message": "Masud New user is created"}
